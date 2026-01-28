@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Moroccan Currency Converter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Inter", "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f2f4f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 380px;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #1f2937;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .input-group {
+            display: flex;
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .input-group input {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-group select {
+            border: none;
+            border-left: 1px solid #d1d5db;
+            padding: 0 12px;
+            font-size: 14px;
+            background: #f9fafb;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .arrow {
+            text-align: center;
+            font-size: 20px;
+            margin: 8px 0;
+            color: #6b7280;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 16px;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        .result {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .hint {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Moroccan Currency Converter</h1>
+
+    <!-- FROM -->
+    <div class="input-group">
+        <input type="number" id="amount" placeholder="Enter amount" step="any">
+        <select id="fromUnit">
+            <option value="mad">MAD</option>
+            <option value="ryal">Ryal</option>
+            <option value="centime">Centime</option>
+        </select>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <!-- TO -->
+    <div class="input-group">
+        <input type="text" id="output" placeholder="Result" readonly>
+        <select id="toUnit">
+            <option value="mad">MAD</option>
+            <option value="ryal">Ryal</option>
+            <option value="centime">Centime</option>
+        </select>
+    </div>
+
+    <button onclick="convert()">Convert</button>
+
+    <div class="hint">
+        1 MAD = 20 Ryals · 100 Centimes
+    </div>
+</div>
+
+<script>
+    function convertToMAD(amount, unit) {
+        if (unit === "mad") return amount;
+        if (unit === "ryal") return amount * 0.05;
+        if (unit === "centime") return amount * 0.01;
+    }
+
+    function convertFromMAD(amount, unit) {
+        if (unit === "mad") return amount;
+        if (unit === "ryal") return amount * 20;
+        if (unit === "centime") return amount * 100;
+    }
+
+    function formatNumber(number) {
+        return new Intl.NumberFormat('en-US', {
+            maximumFractionDigits: 2
+        }).format(number);
+    }
+
+    function convert() {
+        const amount = parseFloat(document.getElementById("amount").value);
+        const fromUnit = document.getElementById("fromUnit").value;
+        const toUnit = document.getElementById("toUnit").value;
+        const output = document.getElementById("output");
+
+        if (isNaN(amount)) {
+            output.value = "Invalid amount";
+            return;
+        }
+
+        const mad = convertToMAD(amount, fromUnit);
+        const result = convertFromMAD(mad, toUnit);
+
+        output.value = formatNumber(result);
+    }
+</script>
+
+
+</body>
+</html>
